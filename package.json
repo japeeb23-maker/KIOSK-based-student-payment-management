@@ -1,0 +1,18 @@
+{
+  "name": "fbc-paypoint",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node src/server/server.js",
+    "test": "node --test tests/payment-service.test.js tests/server.test.js tests/staff-navigation.test.js",
+    "migrate:supabase": "node scripts/migrate-sqlite-to-supabase.js",
+    "migrate:credits": "node scripts/migrate-credit-ledger.js",
+    "staff:manage": "node scripts/manage-staff.js"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7a1020">
+  <title>FBC Paypoint — Student Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="FBC Paypoint home">
+        <span class="brand-mark">F<span>+</span></span>
+        <span class="brand-copy"><strong>FBC <span>Paypoint</span></strong><small>STUDENT FINANCE</small></span>
+      </a>
+      <div class="campus-label">CAMPUS</div>
+      <div class="campus-select"><span class="campus-dot"></span><span>Fellowship Baptist College<small>Kabankalan City</small></span><span class="chevron">⌄</span></div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-page="dashboard"><span class="nav-icon">⌂</span>Overview</button>
+        <button class="nav-item" data-page="students"><span class="nav-icon">♙</span>Students <span class="nav-count" id="studentNavCount">0</span></button>
+        <button class="nav-item" data-page="assessments"><span class="nav-icon">▤</span>Assessments</button>
+        <button class="nav-item" data-page="payments"><span class="nav-icon">⇄</span>Payments</button>
+        <button class="nav-item" data-page="promissory"><span class="nav-icon">▧</span>Promissory notes <span class="nav-count note-count" id="noteNavCount">0</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-icon">?</span><strong>Need a hand?</strong><p>Contact the finance office for assistance.</p><a href="mailto:finance@fbc.edu.ph">Get support <span>↗</span></a></div>
+        <button class="profile-button"><span class="avatar">MC</span><span><strong>Maria C.</strong><small>Finance administrator</small></span><span class="profile-more">···</span></button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumb"><span>FBC Paypoint</span><span class="crumb-sep">/</span><strong id="breadcrumbCurrent">Overview</strong></div>
+        <div class="topbar-actions">
+          <div class="term-pill"><span class="term-dot"></span> 1st Semester · AY 2026–27 <span class="chevron">⌄</span></div>
+          <button class="button button-secondary" id="staffRefresh" data-action="refresh-data" hidden>Refresh</button>
+          <button class="button button-secondary staff-access-button" id="staffAccess" data-action="staff-login">Staff login</button>
+          <button class="icon-button notification-button" aria-label="Notifications">♧<i></i></button>
+          <span class="top-avatar">MC</span>
+        </div>
+      </header>
+
+      <section class="page-content">
+        <div id="pageRoot"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></section>
+  </div>
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

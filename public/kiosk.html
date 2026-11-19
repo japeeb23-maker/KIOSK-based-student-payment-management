@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7a1020">
+  <title>Student Payment Kiosk — FBC Paypoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="kiosk.css">
+</head>
+<body class="kiosk-page">
+  <main class="student-kiosk">
+    <header class="kiosk-header">
+      <a class="kiosk-brand" href="kiosk.html" aria-label="FBC Student Paypoint kiosk">
+        <img class="kiosk-brand-logo" src="fbc-logo.jpg" alt="Fellowship Baptist College seal" width="56" height="56">
+        <span><strong>FBC <em>Paypoint</em></strong><small>STUDENT PAYMENT KIOSK</small></span>
+      </a>
+      <div class="kiosk-header-actions">
+        <div class="kiosk-campus"><span class="campus-dot"></span><span>Fellowship Baptist College<small>Kabankalan City</small></span></div>
+        <div class="kiosk-navigation">
+          <button class="kiosk-menu-button" id="kioskMenuToggle" type="button" aria-label="Open navigation menu" aria-controls="kioskPortalMenu" aria-expanded="false">
+            <span class="kiosk-menu-line" aria-hidden="true"></span>
+            <span class="kiosk-menu-line" aria-hidden="true"></span>
+            <span class="kiosk-menu-line" aria-hidden="true"></span>
+          </button>
+          <nav class="kiosk-menu" id="kioskPortalMenu" aria-label="Portal navigation" hidden>
+            <a href="index.html?staffRole=vp">VP for Finance</a>
+            <a href="index.html?staffRole=cashier">Cashier</a>
+            <a href="scholastech.html?portal=registrar">Registrar</a>
+            <a href="scholastech.html">FellowTech</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <section class="kiosk-main">
+      <div class="kiosk-welcome">
+        <span class="kiosk-eyebrow">STUDENT SELF-SERVICE</span>
+        <h1>TUITION &amp; FEES,<br><span>MADE SIMPLE.</span></h1>
+        <p>A clear, secure way to review your assessment and make school payments.</p>
+        <div class="kiosk-features" aria-label="How the student kiosk works">
+          <article class="kiosk-feature">
+            <span class="kiosk-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" focusable="false"><rect x="5" y="9" width="38" height="30" rx="5"></rect><circle cx="17" cy="21" r="4"></circle><path d="M10 32c1.7-4 4.1-6 7-6s5.3 2 7 6M28 19h9M28 25h9M28 31h6"></path></svg>
+            </span>
+            <span class="kiosk-feature-copy"><small>STEP 1</small><strong>Sign in with your student number</strong></span>
+          </article>
+          <article class="kiosk-feature">
+            <span class="kiosk-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" focusable="false"><rect x="8" y="6" width="32" height="36" rx="5"></rect><path d="m15 17 2 2 4-5M25 17h8m-18 10 2 2 4-5m4 3h8m-18 9 2 2 4-5m4 3h8"></path></svg>
+            </span>
+            <span class="kiosk-feature-copy"><small>STEP 2</small><strong>Review your fees</strong></span>
+          </article>
+          <article class="kiosk-feature">
+            <span class="kiosk-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" focusable="false"><rect x="5" y="10" width="38" height="28" rx="5"></rect><path d="M5 18h38M12 27h10"></path><circle cx="33" cy="30" r="7"></circle><path d="m30 30 2 2 4-4"></path></svg>
+            </span>
+            <span class="kiosk-feature-copy"><small>STEP 3</small><strong>Pay securely &amp; get a receipt</strong></span>
+          </article>
+        </div>
+      </div>
+
+      <section class="kiosk-card" id="kioskRoot" aria-live="polite"></section>
+    </section>
+
+    <footer class="kiosk-footer">
+      <span>Fellowship Baptist College · Kabankalan City</span>
+      <a href="mailto:finance@fbc.edu.ph">Need help? Contact the Finance Office</a>
+    </footer>
+  </main>
+  <div id="kioskToast" class="kiosk-toast" aria-live="polite"></div>
+  <script src="api.js"></script>
+  <script src="kiosk.js"></script>
+</body>
+</html>

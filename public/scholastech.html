@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7a1020">
+  <title>FellowTech — School Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="scholastech.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="schoolSidebar">
+      <a class="brand" id="schoolBrand" href="scholastech.html" aria-label="FellowTech home">
+        <span class="brand-mark">F<span>+</span></span>
+        <span class="brand-copy"><strong id="schoolBrandName">Fellow<span>Tech</span></strong><small id="schoolBrandSubtitle">SCHOOL MANAGEMENT</small></span>
+      </a>
+      <div class="campus-label">CAMPUS</div>
+      <div class="campus-select"><span class="campus-dot"></span><span>Fellowship Baptist College<small>Kabankalan City</small></span><span class="chevron">⌄</span></div>
+      <div class="nav-label">SCHOOL OPERATIONS</div>
+      <nav class="main-nav school-nav" id="schoolNavigation" aria-label="FellowTech navigation">
+        <button class="nav-item active" data-school-page="dashboard"><span class="nav-icon">⌂</span><span id="schoolHomeLabel">Overview</span></button>
+        <button class="nav-item" data-school-page="students"><span class="nav-icon">♙</span>Student records</button>
+        <button class="nav-item" data-school-page="admissions"><span class="nav-icon">✚</span>Admissions <span class="nav-count" id="admissionCount">0</span></button>
+        <button class="nav-item" data-school-page="attendance"><span class="nav-icon">✓</span>Attendance</button>
+        <button class="nav-item" data-school-page="timetable"><span class="nav-icon">▦</span>Timetable</button>
+        <button class="nav-item" data-school-page="finance"><span class="nav-icon">₱</span>Financial reports</button>
+        <button class="nav-item" data-school-page="notifications"><span class="nav-icon">♧</span>Notifications</button>
+        <button class="nav-item" data-school-page="compliance"><span class="nav-icon">▤</span>DepEd & CHED</button>
+        <button class="nav-item" data-school-page="scholarships"><span class="nav-icon">✦</span>Scholarships</button>
+        <button class="nav-item" data-school-page="assessments"><span class="nav-icon">▧</span>Assessments</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-icon">?</span><strong id="schoolSupportTitle">FellowTech support</strong><p>School operations and student records in one place.</p><a href="mailto:finance@fbc.edu.ph">Contact the college <span>↗</span></a></div>
+        <a class="back-paypoint" href="index.html"><span>₱</span> FBC Paypoint <span>↗</span></a>
+        <div class="profile-button"><span class="avatar">MC</span><span><strong>Maria C.</strong><small>School administrator</small></span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar school-topbar">
+        <button class="mobile-menu" id="schoolMobileMenu" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumb"><span id="schoolPortalName">FellowTech</span><span class="crumb-sep">/</span><strong id="schoolBreadcrumb">Overview</strong></div>
+        <div class="topbar-actions">
+          <div class="term-pill"><span class="term-dot"></span> 1st Semester · AY 2026–27 <span class="chevron">⌄</span></div>
+          <button class="button button-secondary" id="schoolRefresh" data-school-action="retry" hidden>Refresh</button>
+          <button class="button button-secondary staff-access-button" id="schoolStaffAccess" data-school-action="school-login">Staff sign in</button>
+          <span class="top-avatar">MC</span>
+        </div>
+      </header>
+      <section class="page-content">
+        <div class="school-demo-banner"><strong>BACKEND CONNECTED</strong><span>Notifications are a demo and are not delivered externally.</span></div>
+        <div id="schoolPageRoot"></div>
+      </section>
+    </main>
+  </div>
+  <div class="toast-region" id="schoolToastRegion" aria-live="polite"></div>
+  <div class="modal-backdrop" id="schoolModalBackdrop" hidden>
+    <section class="modal" id="schoolModal" role="dialog" aria-modal="true" aria-labelledby="schoolModalTitle"></section>
+  </div>
+  <script src="api.js"></script>
+  <script src="scholastech.js"></script>
+</body>
+</html>
