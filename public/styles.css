@@ -100,6 +100,7 @@ h1 { margin-bottom: 6px; font: 700 25px Manrope,sans-serif; letter-spacing: -.9p
 .stat-value { margin-top: 11px; font: 700 22px Manrope,sans-serif; letter-spacing: -.7px; }
 .stat-foot { display: flex; align-items: center; gap: 5px; margin-top: 3px; color: #8a948e; font-size: 14px; }
 .trend-up { color: #438c60; font-weight: 600; }
+.trend-down { color: #b42318; font-weight: 600; }
 .dashboard-grid { display: grid; grid-template-columns: minmax(0,1.58fr) minmax(260px,.92fr); gap: 15px; align-items: start; }
 .panel { overflow: hidden; border: 1px solid #ebeeeb; border-radius: 8px; background: #fff; }
 .panel-header { display: flex; min-height: 57px; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 17px; border-bottom: 1px solid #eff1ef; }

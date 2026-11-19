@@ -133,6 +133,15 @@ async function signOutStaff() {
 function renderDashboard() {
   const currentMonth = new Date().toISOString().slice(0, 7);
   const collected = data.payments.filter(payment => payment.date.startsWith(currentMonth)).reduce((sum, payment) => sum + payment.amount, 0);
+  const previousDate = new Date();
+  previousDate.setDate(1);
+  previousDate.setMonth(previousDate.getMonth() - 1);
+  const previousMonth = `${previousDate.getFullYear()}-${String(previousDate.getMonth() + 1).padStart(2, "0")}`;
+  const previousCollected = data.payments.filter(payment => payment.date.startsWith(previousMonth)).reduce((sum, payment) => sum + payment.amount, 0);
+  const change = previousCollected > 0 ? ((collected - previousCollected) / previousCollected) * 100 : null;
+  const collectionTrend = change === null
+    ? "<span>No collections last month to compare</span>"
+    : `<span class="${change >= 0 ? "trend-up" : "trend-down"}">${change >= 0 ? "↑" : "↓"} ${Math.abs(change).toFixed(1)}%</span><span>from last month</span>`;
   const outstanding = data.assessments.reduce((sum, assessment) => sum + assessmentBalance(assessment), 0);
   const pendingNotes = data.notes.filter(note => note.status === "Pending").length;
   const payments = latestPayments(4);
@@ -141,7 +150,7 @@ function renderDashboard() {
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   return `<div class="dashboard-view staff-dashboard">${heading(todayLabel, `${greeting}, ${escapeHtml(STAFF_ROLES[staffSession.role])}`, "Here’s what’s happening with student accounts today.", `<button class="button button-secondary" data-action="export">↓ &nbsp;Export report</button><button class="button button-primary" data-page="assessments">Review fee assessments →</button>`)}
     <div class="stats-grid">
-      <article class="stat-card"><div class="stat-top"><span>Collections this month</span><span class="stat-icon">₱</span></div><div class="stat-value">${money(collected)}</div><div class="stat-foot"><span class="trend-up">↑ 12.8%</span><span>from last month</span></div></article>
+      <article class="stat-card"><div class="stat-top"><span>Collections this month</span><span class="stat-icon">₱</span></div><div class="stat-value">${money(collected)}</div><div class="stat-foot">${collectionTrend}</div></article>
       <article class="stat-card"><div class="stat-top"><span>Outstanding balance</span><span class="stat-icon amber">◷</span></div><div class="stat-value">${money(outstanding)}</div><div class="stat-foot"><span>${data.assessments.filter(item => assessmentBalance(item) > 0).length} accounts</span><span>with remaining balance</span></div></article>
       <article class="stat-card"><div class="stat-top"><span>Enrolled students</span><span class="stat-icon blue">♙</span></div><div class="stat-value">${data.students.length.toLocaleString()}</div><div class="stat-foot"><span>For 1st semester</span><span>AY 2026–27</span></div></article>
       <article class="stat-card"><div class="stat-top"><span>Notes for review</span><span class="stat-icon purple">▧</span></div><div class="stat-value">${pendingNotes}</div><div class="stat-foot"><span>Promissory note requests</span><span>awaiting review</span></div></article>
