@@ -1,0 +1,17 @@
+[Unit]
+Description=FBC Paypoint server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=fbc
+WorkingDirectory=/opt/fbc-paypoint
+EnvironmentFile=/etc/fbc-paypoint.env
+ExecStart=/usr/bin/node src/server/server.js
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/fbc-paypoint/data
+
+[Install]
+WantedBy=multi-user.target

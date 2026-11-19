@@ -6,6 +6,7 @@ FBC Paypoint provides a student payment kiosk, staff finance tools, a Registrar 
 
 - [Architecture](docs/ARCHITECTURE.md): project layout, request flow, roles, configuration, and commands.
 - [Payments](docs/PAYMENTS.md): payment ledger, providers, hardware, migration, and deployment.
+- [Deployment](docs/DEPLOYMENT.md): hosting the front end on Vercel with the backend on a VPS.
 - [Security](docs/SECURITY.md): security controls, operating checklist, and known gaps.
 
 ## Requirements

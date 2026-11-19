@@ -1,0 +1,4 @@
+api.example.edu.ph {
+	encode gzip
+	reverse_proxy 127.0.0.1:4177
+}
