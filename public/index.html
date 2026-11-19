@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="staff-app">
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="#" aria-label="FBC Paypoint home">
@@ -29,7 +29,7 @@
       </nav>
       <div class="sidebar-bottom">
         <div class="help-card"><span class="help-icon">?</span><strong>Need a hand?</strong><p>Contact the finance office for assistance.</p><a href="mailto:finance@fbc.edu.ph">Get support <span>↗</span></a></div>
-        <button class="profile-button"><span class="avatar">MC</span><span><strong>Maria C.</strong><small>Finance administrator</small></span><span class="profile-more">···</span></button>
+        <button class="profile-button"><span class="avatar"></span><span><strong></strong><small></small></span><span class="profile-more">···</span></button>
       </div>
     </aside>
 
@@ -40,9 +40,10 @@
         <div class="topbar-actions">
           <div class="term-pill"><span class="term-dot"></span> 1st Semester · AY 2026–27 <span class="chevron">⌄</span></div>
           <button class="button button-secondary" id="staffRefresh" data-action="refresh-data" hidden>Refresh</button>
-          <button class="button button-secondary staff-access-button" id="staffAccess" data-action="staff-login">Staff login</button>
+          <span class="staff-identity" id="staffIdentity" hidden><strong id="staffIdentityName"></strong><small id="staffIdentityRole"></small></span>
+          <button class="button button-secondary staff-access-button" id="staffAccess" data-action="staff-logout" hidden>Sign out</button>
           <button class="icon-button notification-button" aria-label="Notifications">♧<i></i></button>
-          <span class="top-avatar">MC</span>
+          <span class="top-avatar" id="topAvatar"></span>
         </div>
       </header>
 

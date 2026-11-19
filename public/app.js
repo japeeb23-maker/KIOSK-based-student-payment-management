@@ -137,7 +137,9 @@ function renderDashboard() {
   const pendingNotes = data.notes.filter(note => note.status === "Pending").length;
   const payments = latestPayments(4);
   const todayLabel = new Date().toLocaleDateString("en-PH", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).toUpperCase();
-  return `<div class="dashboard-view staff-dashboard">${heading(todayLabel, "Good morning, Maria 👋", "Here’s what’s happening with student accounts today.", `<button class="button button-secondary" data-action="export">↓ &nbsp;Export report</button><button class="button button-primary" data-page="assessments">Review fee assessments →</button>`)}
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  return `<div class="dashboard-view staff-dashboard">${heading(todayLabel, `${greeting}, ${escapeHtml(STAFF_ROLES[staffSession.role])}`, "Here’s what’s happening with student accounts today.", `<button class="button button-secondary" data-action="export">↓ &nbsp;Export report</button><button class="button button-primary" data-page="assessments">Review fee assessments →</button>`)}
     <div class="stats-grid">
       <article class="stat-card"><div class="stat-top"><span>Collections this month</span><span class="stat-icon">₱</span></div><div class="stat-value">${money(collected)}</div><div class="stat-foot"><span class="trend-up">↑ 12.8%</span><span>from last month</span></div></article>
       <article class="stat-card"><div class="stat-top"><span>Outstanding balance</span><span class="stat-icon amber">◷</span></div><div class="stat-value">${money(outstanding)}</div><div class="stat-foot"><span>${data.assessments.filter(item => assessmentBalance(item) > 0).length} accounts</span><span>with remaining balance</span></div></article>
@@ -227,21 +229,22 @@ function render() {
   if (document.body) document.body.classList.toggle("staff-dashboard-active", Boolean(staffSession && currentPage === "dashboard"));
   document.getElementById("pageRoot").innerHTML = staffSession
     ? `<div class="demo-banner"><span>BACKEND CONNECTED</span> Use Refresh to load changes made on other devices.</div>${pageRenderers[currentPage]()}`
-    : `<section class="panel"><div class="panel-body"><div class="eyebrow">STAFF ACCESS</div><h1>Sign in to FBC Paypoint</h1><p class="page-subtitle">Use your assigned staff account to access student and finance records.</p><button class="button button-primary" data-action="staff-login">Staff sign in</button></div></section>`;
+    : `<section class="signin-screen"><div class="signin-card"><img class="signin-logo" src="fbc-logo.jpg" alt="Fellowship Baptist College seal" width="72" height="72"><div class="eyebrow">FBC PAYPOINT</div><h1>Welcome</h1><p class="page-subtitle">Choose how you would like to continue.</p><div class="signin-actions"><a class="button button-primary signin-choice" href="kiosk.html"><strong>Student Kiosk</strong><small>Check balances and pay fees</small></a><button class="button button-secondary signin-choice" data-action="staff-login"><strong>Staff Sign In</strong><small>Cashier, VP for Finance, Registrar</small></button></div></div></section>`;
+  document.body?.classList.toggle("signed-out", !staffSession);
   document.getElementById("breadcrumbCurrent").textContent = pageTitles[currentPage];
-  const staffAccess = document.getElementById("staffAccess");
   document.getElementById("staffRefresh").hidden = !staffSession;
-  if (staffAccess) {
-    staffAccess.textContent = staffSession ? `${label} · Sign out` : "Staff login";
-    staffAccess.dataset.action = staffSession ? "staff-logout" : "staff-login";
-  }
+  document.getElementById("staffAccess").hidden = !staffSession;
+  const identity = document.getElementById("staffIdentity");
+  identity.hidden = !staffSession;
+  document.getElementById("staffIdentityName").textContent = staffSession?.username || "";
+  document.getElementById("staffIdentityRole").textContent = label;
   const profile = document.querySelector(".profile-button");
   if (profile) {
-    profile.querySelector(".avatar").textContent = staffSession ? initials(label) : "MC";
-    profile.querySelector("strong").textContent = staffSession ? staffSession.username : "Maria C.";
-    profile.querySelector("small").textContent = staffSession ? label : "Finance administrator";
+    profile.querySelector(".avatar").textContent = staffSession ? initials(label) : "";
+    profile.querySelector("strong").textContent = staffSession?.username || "";
+    profile.querySelector("small").textContent = label;
   }
-  document.querySelector(".top-avatar").textContent = staffSession ? initials(label) : "MC";
+  document.getElementById("topAvatar").textContent = staffSession ? initials(label) : "";
   document.getElementById("studentNavCount").textContent = data.students.length;
   document.getElementById("noteNavCount").textContent = data.notes.filter(note => note.status === "Pending").length;
   document.querySelectorAll(".nav-item").forEach(button => {
