@@ -24,7 +24,8 @@ const FILES = new Map([
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/kiosk.css", ["kiosk.css", "text/css; charset=utf-8"]],
   ["/scholastech.css", ["scholastech.css", "text/css; charset=utf-8"]],
-  ["/fbc-logo.jpg", ["fbc-logo.jpg", "image/jpeg"]]
+  ["/fbc-logo.jpg", ["fbc-logo.jpg", "image/jpeg"]],
+  ["/favicon.ico", ["fbc-logo.jpg", "image/jpeg"]]
 ]);
 
 class HttpError extends Error {
