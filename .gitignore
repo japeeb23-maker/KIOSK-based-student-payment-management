@@ -1,0 +1,9 @@
+data/
+.env
+.env.*
+!.env.example
+config/ngrok.yml
+private/
+# Include certificate files for deployment
+!src/server/certs/
+
