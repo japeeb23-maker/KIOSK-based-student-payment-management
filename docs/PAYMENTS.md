@@ -28,7 +28,8 @@ Set secrets through the process environment or a secret manager; do not commit t
 | `FBC_PUBLIC_BASE_URL` | Public HTTPS base URL used as the wallet return URL. |
 | `FBC_HOST`, `PORT` | Bind address and port; defaults to `127.0.0.1` and `4177`. |
 | `FBC_TLS_CERT_PATH`, `FBC_TLS_KEY_PATH` | Certificate chain and private-key file paths required for network access. |
-| `FBC_TRUST_HTTPS_PROXY` | Set to `true` only for loopback HTTP behind a trusted HTTPS proxy; requires `FBC_PUBLIC_BASE_URL`. |
+| `FBC_TRUST_HTTPS_PROXY` | Set to `true` only behind a trusted HTTPS proxy; requires `FBC_PUBLIC_BASE_URL`. |
+| `FBC_ALLOW_NETWORK_PROXY` | Explicitly allow a production `0.0.0.0` HTTP binding behind a trusted HTTPS proxy, such as Render. See [DEPLOYMENT.md](DEPLOYMENT.md). |
 | `CASH_DEVICE_ID` | The single configured bill-acceptor identity. |
 | `CASH_DEVICE_HMAC_SECRET` | Authenticate bill-acceptor events and acceptance queries. |
 | `SENDGRID_API_KEY`, `RECEIPT_FROM_EMAIL` | Optional SendGrid email receipt delivery. |

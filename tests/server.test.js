@@ -11,6 +11,45 @@ const { configuration, initializeDatabase, makeApplication } = require("../src/s
 const scrypt = (password, salt) => new Promise((resolve, reject) =>
   crypto.scrypt(password, salt, 64, (error, key) => error ? reject(error) : resolve(key)));
 
+test("network proxy mode requires explicit production configuration", async () => {
+  const env = {
+    NODE_ENV: "production", FBC_HOST: "0.0.0.0", FBC_ALLOW_NETWORK_PROXY: "true",
+    FBC_TRUST_HTTPS_PROXY: "true", FBC_PUBLIC_BASE_URL: "https://example.onrender.com"
+  };
+  const config = configuration(env);
+  assert.equal(config.host, "0.0.0.0");
+  assert.equal(config.networkExposed, true);
+  assert.throws(() => configuration({ ...env, FBC_ALLOW_NETWORK_PROXY: "false" }));
+  assert.throws(() => configuration({ ...env, FBC_TRUST_HTTPS_PROXY: "false" }));
+  assert.throws(() => configuration({ ...env, NODE_ENV: "development" }));
+
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "fbc-proxy-test-"));
+  const originalUrl = process.env.DATABASE_URL;
+  const originalEnv = process.env.NODE_ENV;
+  delete process.env.DATABASE_URL;
+  process.env.NODE_ENV = "test";
+  const db = createDatabase({ databasePath: path.join(directory, "test.sqlite") });
+  let server;
+  try {
+    await initializeDatabase(db);
+    server = http.createServer(makeApplication(db, config));
+    await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
+    const base = `http://127.0.0.1:${server.address().port}`;
+    const login = origin => fetch(`${base}/api/auth/student`, {
+      method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: "{}"
+    });
+    assert.equal((await login(env.FBC_PUBLIC_BASE_URL)).status, 401);
+    assert.equal((await login(base)).status, 403);
+    assert.equal((await login("https://evil.example")).status, 403);
+  } finally {
+    if (server) await new Promise(resolve => server.close(resolve));
+    await db.close();
+    if (originalUrl === undefined) delete process.env.DATABASE_URL; else process.env.DATABASE_URL = originalUrl;
+    if (originalEnv === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = originalEnv;
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test("sessions, roles, payments and registrar actions are enforced by the server", async () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "fbc-server-test-"));
   const originalUrl = process.env.DATABASE_URL;

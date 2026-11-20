@@ -271,10 +271,14 @@ function configuration(env = process.env) {
   if (Boolean(certPath) !== Boolean(keyPath)) throw new Error("Configure both FBC_TLS_CERT_PATH and FBC_TLS_KEY_PATH.");
   const localHost = ["127.0.0.1", "::1", "localhost"].includes(host);
   const httpsProxy = env.FBC_TRUST_HTTPS_PROXY === "true";
-  if (httpsProxy && (!localHost || certPath || !env.FBC_PUBLIC_BASE_URL)) {
-    throw new Error("HTTPS proxy mode requires loopback HTTP and an HTTPS FBC_PUBLIC_BASE_URL.");
+  const networkProxy = env.FBC_ALLOW_NETWORK_PROXY === "true";
+  if (networkProxy && (host !== "0.0.0.0" || !httpsProxy || env.NODE_ENV !== "production")) {
+    throw new Error("Network proxy mode requires production, FBC_HOST=0.0.0.0 and FBC_TRUST_HTTPS_PROXY=true.");
   }
-  if (!localHost && (!certPath || !env.FBC_PUBLIC_BASE_URL)) {
+  if (httpsProxy && ((!localHost && !networkProxy) || certPath || !env.FBC_PUBLIC_BASE_URL)) {
+    throw new Error("HTTPS proxy mode requires an allowed HTTP binding and an HTTPS FBC_PUBLIC_BASE_URL.");
+  }
+  if (!localHost && !httpsProxy && (!certPath || !env.FBC_PUBLIC_BASE_URL)) {
     throw new Error("Network access requires TLS certificate/key files and an HTTPS FBC_PUBLIC_BASE_URL.");
   }
   let origin = "";
@@ -357,7 +361,7 @@ function makeApplication(db, config, options = {}) {
     const origin = request.headers.origin;
     if (config.httpsProxy) {
       const localOrigins = ["localhost", "127.0.0.1", "[::1]"].map(host => `http://${host}:${request.socket.localPort}`);
-      if (origin === config.origin || (localOrigins.includes(origin) && origin === `http://${request.headers.host}`)) return;
+      if (origin === config.origin || (config.localHost && localOrigins.includes(origin) && origin === `http://${request.headers.host}`)) return;
       throw new HttpError(403, "Request origin is not allowed.");
     }
     let expected = config.origin;

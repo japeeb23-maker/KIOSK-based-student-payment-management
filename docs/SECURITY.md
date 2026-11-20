@@ -4,7 +4,7 @@
 
 - **Authentication:** staff passwords are stored as salted scrypt hashes and compared in constant time. Students sign in with their student number only (no PIN), protected by rate limiting and a five-failure lockout per client/student number; this is weaker than a secret credential, so keep student numbers private and use Registrar **Sign out** to revoke sessions. Failed sign-ins return one generic message.
 - **Sessions:** random tokens, hashed at rest, HttpOnly + SameSite=Lax cookie, `Secure` over HTTPS.
-- **Rate limiting and lockout:** 15 sign-in attempts per minute per client address; 5 failures then a 15-minute lockout per student (per address) and per staff account. Behind a trusted local proxy (`FBC_TRUST_HTTPS_PROXY`), the client address comes from `X-Forwarded-For`.
+- **Rate limiting and lockout:** 15 sign-in attempts per minute per client address; 5 failures then a 15-minute lockout per student (per address) and per staff account. Behind a trusted local proxy (`FBC_TRUST_HTTPS_PROXY`), the client address comes from `X-Forwarded-For`. Non-loopback proxies are not trusted for client IPs, so their users may share a rate limit.
 - **CSRF:** state-changing routes require a matching `Origin`.
 - **Injection and XSS:** all SQL is parameterized; client rendering escapes dynamic values.
 - **Static files:** only the allow-listed files in `public/` are served; databases, `.env`, `private/` and `config/` are not reachable.
@@ -29,6 +29,7 @@
 - No Content-Security-Policy or HSTS headers yet; add them as defense in depth.
 - No multi-factor authentication for staff.
 - Lockouts are in memory and reset when the server restarts.
+- Render proxy mode exposes the application port within its private network. Use it only where untrusted clients cannot connect directly; TLS and origin protections depend on the trusted proxy.
 - A person who repeatedly enters wrong passwords can temporarily lock a staff account.
 
 ## Reporting

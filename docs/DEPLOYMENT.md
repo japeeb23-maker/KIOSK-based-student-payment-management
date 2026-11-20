@@ -1,4 +1,28 @@
-# Deployment: Vercel front end + VPS backend
+# Deployment
+
+## Render: whole application
+
+Render hosts both the static pages and Node API as one web service. Use a Supabase PostgreSQL database for persistent records; production refuses the local SQLite database. To transfer an existing SQLite database, back it up and follow the migration instructions in [PAYMENTS.md](PAYMENTS.md) before the first Render start. The migration requires an empty target and does not merge records.
+
+1. Connect the repository to Render and create a Node web service from the project root.
+2. Set the build command to `npm ci` and the start command to `npm start`. Use Node 22.5 or later; set `NODE_VERSION` to `22` if necessary. Set the health check path to `/health`.
+3. Add these environment variables in Render, using the service's actual HTTPS origin with no trailing path:
+
+        ```text
+        NODE_ENV=production
+        FBC_HOST=0.0.0.0
+        FBC_TRUST_HTTPS_PROXY=true
+        FBC_ALLOW_NETWORK_PROXY=true
+        FBC_PUBLIC_BASE_URL=https://your-service.onrender.com
+        DATABASE_URL=<Supabase PostgreSQL connection string>
+        ```
+
+        Render supplies `PORT`. Enter `DATABASE_URL` and any payment secrets in Render's environment settings, not in Git or a browser. Configure PayMongo and webhook secrets before accepting real payments; see [PAYMENTS.md](PAYMENTS.md).
+4. Deploy and check `https://your-service.onrender.com/health` and `https://your-service.onrender.com/api/kiosk/config`. Both should return 200. Open the Render URL for the kiosk and verify sign-in and sign-out.
+
+`FBC_ALLOW_NETWORK_PROXY` permits HTTP on the container network only for a trusted HTTPS-terminating proxy. Do not use it when the application port is directly reachable from untrusted networks. It does not trust forwarded client IPs from non-loopback connections, so rate limits may be shared by all users behind Render's proxy. Student-number-only sign-in is weak; review [SECURITY.md](SECURITY.md) and restrict access before exposing real student records. A new database starts empty and has no staff accounts; provision them as described in the README.
+
+## Vercel front end + VPS backend
 
 Vercel serves only the static files in `public/`. The Node server (`src/server/server.js`) must run on a VPS, with Caddy providing HTTPS. This matches the server's rule that it binds to loopback only and trusts an HTTPS proxy.
 
